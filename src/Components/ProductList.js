@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Product from './Product';
 import Title from './Ttile';
 import { ProductConsumer } from '../context';
-
+import Pagination from './Pagination';
 class ProductList extends PureComponent {
    
     render() {
@@ -14,10 +14,12 @@ class ProductList extends PureComponent {
                         <div className="row">
                             <ProductConsumer>
                                 {value => {
-                                    return value.products.map(product => {
-                                        return <Product key={product.id} product={product}/>
-                                    })
-                                }}
+                                    return value.pageOfItems.map(product => {
+                                        return (
+                                            <Product key={product.id} product={product}/>
+                                            )
+                                        })
+                                    }}
                             </ProductConsumer>
                         </div>
                     </div>
