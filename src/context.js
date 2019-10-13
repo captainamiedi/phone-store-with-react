@@ -12,7 +12,13 @@ export default class ProductProvider extends Component {
         modalProduct: detailProduct,
         cartSubTotal: 0,
         cartTax: 0,
-        cartTotal: 0
+        cartTotal: 0,
+        sort: '',
+        size: '',
+        currentProducts: [],
+        currentPage: '',
+        total: '',
+        pageOfItems: []
     };
 
     componentDidMount() {
@@ -42,6 +48,95 @@ export default class ProductProvider extends Component {
       })
     }
 
+    handleSort = (e) => {
+        this.setState({
+            sort: e.target.value
+        });
+        this.sortProduct();
+        
+        console.log(this.state.size)
+    }
+
+    handleSize = (e) => {
+        this.setState({
+            size: e.target.value
+        });
+        // console.log(this.state.products);
+        // this.filterProduct(e.target.value);
+        this.sortProduct()
+    }
+
+    // onPageChanged = data => {
+    //     const { products } = this.state;
+    //     const { currentPage, totalPages, pageLimit } = data;
+    
+    //     const offset = (currentPage - 1) * pageLimit;
+    //     const currentProducts = products.slice(offset, offset + pageLimit);
+    
+    //     this.setState({ currentPage, currentProducts, totalPages });
+    //   };
+
+    onChangePage = (pageOfItems) => {
+        // update state with new page of items
+        this.setState({
+            pageOfItems: pageOfItems
+        });
+        console.log(this.state.pageOfItems);
+        }
+
+    sortProduct = () => {
+        this.setState(state => {
+            if (state.sort !== '') {
+                state.products.sort((a,b) => (state.sort === 'lowest') ? (a.price > b.price ? 1 : -1 ) : (a.price < b.price ? 1 : -1 ))
+            } else {
+                state.products.sort((a,b) => (a.id < b.id ? 1 : -1))
+            }
+            if (state.size !== '') {
+                // console.log(state.products);
+                // let filteredProduts = state.products;
+                return {
+                    
+                    products: storeProducts.filter(
+                        (product) => {
+                            // console.log(product.company)
+                            return product.company.toLowerCase().indexOf(state.size.toLowerCase()) !== -1
+                        }
+                    )
+                }
+            }  else {
+                return {
+                    products: state.products
+                }
+            }
+            // if (state.size === '') {
+            //     return {
+            //         products: state.products
+            //     } 
+            // }
+            // console.log(state.products)
+            // return {
+            //     products: state.products
+            // }
+        })
+    }
+
+    filterProduct =(input) =>{
+        let filtered = storeProducts;
+        this.setState((state) => {
+            // const {size, products} =this.state;
+            const filteredData = filtered.filter(el => el.company.toLowerCase().includes(input.toLowerCase()))
+            return {
+                products: filteredData
+            }
+        })
+    }
+
+    // const filteredData = prevState.data.filter(el =>
+    //     el.dataConnectionName.toLowerCase().includes(lowercasedValue)
+    //   );
+
+    //   return { filteredData };
+    // })
     addToCart = (id) => {
        let tempProducts = [...this.state.products];
        const index = tempProducts.indexOf(this.getItem(id));
@@ -147,7 +242,13 @@ export default class ProductProvider extends Component {
                 increment: this.increment,
                 decrement: this.decrement,
                 removeItem: this.removeItem,
-                clearCart: this.clearCart
+                clearCart: this.clearCart,
+                handleSort: this.handleSort,
+                handleSize: this.handleSize,
+                onPageChanged: this.onPageChanged,
+                pageLimit: 18,
+                pageNeighbours: 1,
+                onChangePage: this.onChangePage
             }}>
                {this.props.children} 
             </ProductContext.Provider>
