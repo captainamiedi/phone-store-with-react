@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
+// import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Components/Navbar';
 import ProductList from './Components/ProductList';
@@ -15,8 +16,23 @@ import { ProductConsumer } from './context';
 function App() {
   return (
     <React.Fragment>
-      <Navbar />
-      <Fiter />
+      <ProductConsumer>
+        {(value) => {
+          const {handleShow2} = value
+          return (
+
+            <Navbar handleShow2={handleShow2} />
+          )
+        }}
+      </ProductConsumer>
+      <ProductConsumer>
+        {(value) => {
+          const { isShow } = value;
+          return (
+            isShow ? <Fiter /> : ''
+          )
+        }}
+      </ProductConsumer>
       <Switch>
         <Route exact path="/" component={ProductList} />
         <Route path="/details" component={Details} />
@@ -26,10 +42,10 @@ function App() {
       <Modal />
       <ProductConsumer>
         {(value) => {
-          const {products, onChangePage } = value;
-          console.log(products);
+          const {products, onChangePage, isShow } = value;
           return (
-            <Pagination items={products} onChangePage={onChangePage} style/>
+            isShow ? <Pagination items={products} onChangePage={onChangePage} style/> : ''
+            // <Pagination items={products} onChangePage={onChangePage} style/>
           )
         }}
       </ProductConsumer>

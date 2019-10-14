@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import {ProductConsumer} from '../context';
 import { Link } from 'react-router-dom';
 import {ButtonContainer} from './Button';
+import CommentBox from './CommentBox';
 
 
 class Details extends PureComponent {
@@ -11,15 +12,16 @@ class Details extends PureComponent {
            <ProductConsumer>
                {(value) => {
                    const { id, company, img, info, price, title, inCart} = value.detailProduct;
-
+                    const {handleShow} = value;
                    return (
-                       <div className="container py-5">
+                       <React.Fragment>
+                       <div className="container py-5 ">
                            <div className="row">
                                <div className="col-10 mx-auto text-center text-slanted text-blue my-5">
                                    <h1>{title}</h1>
                                </div>
                            </div>
-                           <div className="row">
+                           <div className="row" style={{paddingBottom: '2rem'}}>
                                <div className="col-10 mx-auto col-md-6 my-3">
                                    <img src={img} className="img-fluid" alt="product"/>
                                </div>
@@ -32,7 +34,7 @@ class Details extends PureComponent {
                                     <p className="text-capitalize font-weight-bold mt-3 mb-0">some info product</p>
                                     <p className="text-muted lead">{info}</p>    
                                     <div>
-                                        <Link to="/">
+                                        <Link to="/" onClick={handleShow}>
                                             <ButtonContainer>
                                                 back to product
                                             </ButtonContainer>
@@ -44,10 +46,13 @@ class Details extends PureComponent {
                                         >
                                             {inCart ? "inCart" : "add to cart"}
                                         </ButtonContainer>
+                                        
                                     </div>                             
                                </div>
                            </div>
+                           <CommentBox />
                        </div>
+                       </React.Fragment>
                    )
                }}
            </ProductConsumer>

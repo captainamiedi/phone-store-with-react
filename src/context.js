@@ -18,7 +18,8 @@ export default class ProductProvider extends Component {
         currentProducts: [],
         currentPage: '',
         total: '',
-        pageOfItems: []
+        pageOfItems: [],
+        isShow: true
     };
 
     componentDidMount() {
@@ -44,7 +45,10 @@ export default class ProductProvider extends Component {
     handleDetails = (id) => {
       const product = this.getItem(id);
       this.setState(()=> {
-          return { detailProduct: product}
+          return { 
+              detailProduct: product,
+              isShow: false
+            }
       })
     }
 
@@ -54,7 +58,7 @@ export default class ProductProvider extends Component {
         });
         this.sortProduct();
         
-        console.log(this.state.size)
+        // console.log(this.state.size)
     }
 
     handleSize = (e) => {
@@ -81,15 +85,15 @@ export default class ProductProvider extends Component {
         this.setState({
             pageOfItems: pageOfItems
         });
-        console.log(this.state.pageOfItems);
+        // console.log(this.state.pageOfItems);
         }
 
     sortProduct = () => {
         this.setState(state => {
             if (state.sort !== '') {
-                state.products.sort((a,b) => (state.sort === 'lowest') ? (a.price > b.price ? 1 : -1 ) : (a.price < b.price ? 1 : -1 ))
+                state.pageOfItems.sort((a,b) => (state.sort === 'lowest') ? (a.price > b.price ? 1 : -1 ) : (a.price < b.price ? 1 : -1 ))
             } else {
-                state.products.sort((a,b) => (a.id < b.id ? 1 : -1))
+                state.pageOfItems.sort((a,b) => (a.id < b.id ? 1 : -1))
             }
             if (state.size !== '') {
                 // console.log(state.products);
@@ -131,12 +135,16 @@ export default class ProductProvider extends Component {
         })
     }
 
-    // const filteredData = prevState.data.filter(el =>
-    //     el.dataConnectionName.toLowerCase().includes(lowercasedValue)
-    //   );
-
-    //   return { filteredData };
-    // })
+    handleShow = () => {
+        this.setState({
+            isShow: true
+        })
+    }
+    handleShow2 = () => {
+        this.setState({
+            isShow: false
+        })
+    }
     addToCart = (id) => {
        let tempProducts = [...this.state.products];
        const index = tempProducts.indexOf(this.getItem(id));
@@ -209,7 +217,10 @@ export default class ProductProvider extends Component {
     };
     clearCart =() =>{
         this.setState(()=>{
-            return { cart: []}
+            return {
+                cart: [],
+                isShow: true
+            }
         }, ()=>{
             this.setProducts();
             this.addTotals();
@@ -245,10 +256,10 @@ export default class ProductProvider extends Component {
                 clearCart: this.clearCart,
                 handleSort: this.handleSort,
                 handleSize: this.handleSize,
-                onPageChanged: this.onPageChanged,
-                pageLimit: 18,
-                pageNeighbours: 1,
-                onChangePage: this.onChangePage
+                onChangePage: this.onChangePage,
+                handleShow: this.handleShow,
+                handleShow2: this.handleShow2,
+                change: {}
             }}>
                {this.props.children} 
             </ProductContext.Provider>
