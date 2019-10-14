@@ -9,12 +9,13 @@ export default class Modal extends Component {
         return (
             <ProductConsumer>
                 {value => {
-                    const {modalOpen, closeModal} = value;
+                    const {modalOpen, closeModal, change} = value;
                     const {img, title, price} = value.modalProduct;
 
                     if(!modalOpen){
                         return null;
-                    } else {
+                    } 
+                    if(change) {
                        return(<ModalContainer>
                             <div className="container">
                                 <div className="row">
@@ -41,6 +42,15 @@ export default class Modal extends Component {
                                 </div>
                             </div>
                         </ModalContainer>
+                        );
+                    }
+                    if (!change) {
+                        return (
+                            <ModalContainer>
+                                <div className="container">
+                                    <h1>hello</h1>
+                                </div>
+                            </ModalContainer>
                         );
                     }
                 }}

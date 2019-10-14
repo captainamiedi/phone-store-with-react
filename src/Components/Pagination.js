@@ -13,21 +13,21 @@ export default class Pagination extends Component {
   componentWillMount() {
     // set page if items array isn't empty
     if (this.props.items && this.props.items.length) {
-      console.log(this.props.items);
+      // console.log(this.props.items);
       this.setPage(this.props.initialPage);
     }
   }
   
   componentDidUpdate(prevProps, prevState) {
     // reset page if items array has changed
-    console.log(this.props.items);
+    // console.log(this.props.items);
     if (this.props.items !== prevProps.items) {
       this.setPage(this.props.initialPage);
     }
   }
   
   setPage(page) {
-    console.log(this.props.items);
+    // console.log(this.props.items);
     var { items, pageSize } = this.props;
     var pager = this.state.pager;
     
