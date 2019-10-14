@@ -18,10 +18,10 @@ function App() {
     <React.Fragment>
       <ProductConsumer>
         {(value) => {
-          const {handleShow2} = value
+          const {handleShow2, handleShow} = value
           return (
 
-            <Navbar handleShow2={handleShow2} />
+            <Navbar handleShow2={handleShow2} handleShow={handleShow}/>
           )
         }}
       </ProductConsumer>
